@@ -1,0 +1,32 @@
+{
+  "name": "Simple Chrome Extension",
+  "description": "Simple Chrome Extension",
+  "version": "1.0",
+  "background":{
+    "scripts" : ["background.js"]
+  },
+  "browser_action": {
+    "default_icon": "res/images/logo.png",
+    "default_popup": "views/popup.html",
+    "default_title": "Simple Chrome Extension"
+  },
+  "icons": { "16": "res/images/logo.png",
+    "32": "res/images/logo.png",
+    "120": "res/images/logo.png" 
+  },
+  "permissions": [
+    "tabs","<all_urls>",
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["res/js/jquery.js","content.js","popup.js","res/js/lockr.min.js","res/js/lodash.min.js","res/js/semantic.min.js"],
+      "run_at": "document_start"
+    }
+  ], 
+  "manifest_version":2
+}

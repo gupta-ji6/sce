@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/res/css/zooAll.min.css" />
+  <script type="text/javascript" src="/res/js/angular.min.js"></script>
+  <script type="text/javascript" src="/res/js/lockr.min.js"></script>
+  <script defer type="text/javascript" src="../popup.js"></script>
+</head>
+
+<body ng-app="app" ng-cloak style="height: 400px;">
+  <div ng-controller="myController">
+    <!-- Navbar -->
+    <div class="ui p-3 pb-0 mb-0 fluid rounded-0 mini border-0 borderless" ng-include="'navbar.html'"></div>
+    <!-- Navbar -->
+
+    <!-- Menu -->
+    <div class="ui two item secondary red pointing menu mt-0">
+      <a ng-class="(activeTab=='home') ? 'active item': 'item' " ng-click="saveSettings('home')">Home</a>
+      <a ng-class="(activeTab=='about') ? 'active item': 'item' " ng-click="saveSettings('about')">About</a>
+    </div>
+    <!-- Menu -->
+   
+    <!-- Tab Home -->
+    <div class="p-3" ng-if="activeTab=='home'" ng-include="'tabs/home.html'">
+    </div>
+    <!-- Tab Home -->
+
+    <!-- Tab About -->
+    <div class="p-2" ng-if="activeTab=='about'" ng-include="'tabs/about.html'"></div>
+    <!-- Tab About -->
+  </div>
+</body>
+</html>
