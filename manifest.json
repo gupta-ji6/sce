@@ -20,6 +20,9 @@
     "storage",
     "notifications"
   ],
+
+  "options_page" : "/views/options.html"
+  ,
   "content_scripts": [
     {
       "matches": [
