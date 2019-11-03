@@ -15,8 +15,10 @@
     "120": "res/images/logo.png" 
   },
   "permissions": [
-    "tabs","<all_urls>",
-    "storage"
+    "tabs",
+    "<all_urls>",
+    "storage",
+    "notifications"
   ],
   "content_scripts": [
     {

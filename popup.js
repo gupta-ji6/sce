@@ -63,5 +63,15 @@ ngApp.controller('myController', function ($scope) {
 			this.saveToChromeLocalStorage(data);
 		};
 
+		$scope.sayHey = function(){
+			let  notificationOptions = {
+				type: "basic",
+				iconUrl : "/res/images/logo.png",
+				title : "Hello there!",
+				message: "How are you doing?"
+			}
+			chrome.notifications.create('notificationId',notificationOptions);
+		}
+
 	});
 
