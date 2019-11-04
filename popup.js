@@ -71,6 +71,13 @@ ngApp.controller('myController', function ($scope) {
 				message: "How are you doing?"
 			}
 			chrome.notifications.create('notificationId',notificationOptions);
+			this.addBadge();
+		},
+
+		$scope.addBadge = function(){
+			chrome.browserAction.setBadgeText({
+				text :"Hello"
+			});
 		}
 
 	});
