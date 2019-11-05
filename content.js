@@ -1,39 +1,37 @@
-		function clickOnInviteButtons(){
-			$('.btn>span:contains("Invite to Job")').each(function(i,e){
-				setTimeout(function(){
-					$(e).click();
-				},800);
-			});
-		} 
-
-		function gotoNextPage(){
-			$('a.next-btn-enabled')[0].click();
-		}
+// Send Chrome Runtime Message
+function sendRunTimeMessage(data){
+	chrome.runtime.sendMessage(data);
+}
 
 
-	// ------------------ Chrome Run Time Listner --------------------------
-	chrome.runtime.onMessage.addListener(function (fromPopup) {
+// ------------------ Chrome Run Time Listner --------------------------
+chrome.runtime.onMessage.addListener(function (response) {
+	
+	// Collect 
+	if (response.action == 'collect') {		
+		sendRunTimeMessage({
+			action : 'toPopup',
+			title: $('title').text(),
+		})
+	}
 
-		if (fromPopup.action == 'sendInvite') {		
-			clickOnInviteButtons()
-		}
-		if (fromPopup.action == 'sendInviteForAllPages') {		
-			clickOnInviteButtons();
-			console.log(fromPopup.pageNumber);
+});
+// ------------------ Chrome Run Time Listner --------------------------
 
-			for(let i=1; i<=fromPopup.pageNumber; i++){
-				let time = 12000*i; 
-				setTimeout(function(){
-					gotoNextPage();
 
-					setTimeout(function(){
-						clickOnInviteButtons();
-					},2000);
 
-				},time);
-				console.log(time);
-			}
+// ---------------------- Extension Toolbar ---------------------
+$(function(){
 
-		}
+	let extensionToolbar = {};
+	extensionToolbar.height = "50px";
+	extensionToolbar.url = chrome.extension.getURL("views/extensionToolbar.html"); 
 
-	});
+	// Shift Webpage Document
+	$('body').css('-webkit-transform','translateY('+extensionToolbar.height+')');
+	$('html').append(`
+		<iframe src="${extensionToolbar.url}" id="simple-chrome-extension-toolbar" style="height:${extensionToolbar.height};"></iframe>
+		`);
+
+});
+// ---------------------- Extension Toolbar ---------------------

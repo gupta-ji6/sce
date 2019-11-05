@@ -1,13 +1,13 @@
 {
   "name": "Simple Chrome Extension",
-  "description": "Simple Chrome Extension",
+  "description": "Simple Chrome Extension for quick development",
   "version": "1.0",
   "background":{
     "scripts" : ["background.js","contextMenus.js"],
     "persistent":false
   },
   "browser_action": {
-    "default_icon": "res/images/logo.png",
+    "default_icon": "/res/images/logo.png",
     "default_popup": "views/popup.html",
     "default_title": "Simple Chrome Extension"
   },
@@ -31,9 +31,22 @@
         "http://*/*",
         "https://*/*"
       ],
+      "css":["res/content.css"],
       "js": ["res/js/jquery.js","content.js","popup.js","res/js/lockr.min.js","res/js/lodash.min.js","res/js/semantic.min.js"],
       "run_at": "document_start"
     }
   ], 
-  "manifest_version":2
+  "manifest_version":2,
+  "web_accessible_resources":["views/extensionToolbar.html"],
+
+  "developer":{
+    "name" : "Ritesh Phogat",
+    "github" : "https://github.com/ritesh221b",
+    "upwork" : "https://www.upwork.com/fl/ritesh221b",
+    "linkedin" : "https://www.linkedin.com/in/ritesh-phogat/",
+    "website" : "https://foxoyo.com/",
+    "facebook" : "https://www.facebook.com/foxoyo.phogat.7",
+    "mail" : "riteshphogat11@gmail.com"
+  }
+  
 }

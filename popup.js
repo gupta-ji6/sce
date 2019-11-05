@@ -1,37 +1,46 @@
 var ngApp = angular.module('app', []);
 
-ngApp.controller('myController', function ($scope) {
+ngApp.controller('myController', function ($scope,$http) {
 
 		// Basic
 		$scope.activeTab = 'home';
-		$scope.version = 1.0;
-		$scope.fullName = "Simple Chrome Extension"
-		$scope.name = "Simple Chrome Extension"
 		$scope.short_name = "sce";
-
-		// Developer Info
 		$scope.developer = {};
-		$scope.developer.name = "Ritesh Phogat";
-		$scope.developer.github = "https://github.com/ritesh221b";
-		$scope.developer.upwork = "https://www.upwork.com/fl/ritesh221b";
-		$scope.developer.linkedin = "https://www.linkedin.com/in/ritesh-phogat/";
-		$scope.developer.website = "https://foxoyo.com/";
-		$scope.developer.facebook = "https://www.facebook.com/foxoyo.phogat.7";
-		$scope.developer.mail = "riteshphogat11@gmail.com";
+
+		// Update from manifest.json
+		let manifestURL = chrome.extension.getURL('manifest.json');
+		$http.get(manifestURL)
+		.then(function(response) {
+			console.log(response);
+			response = response.data
+			$scope.name = response.name
+			$scope.fullName = response.name
+			$scope.description = response.description
+			$scope.version = response.version
+			$scope.favicon = response.browser_action.default_icon
+
+			//Developer
+			$scope.developer.name = response.developer.name;
+			$scope.developer.github = response.developer.github;
+			$scope.developer.upwork = response.developer.upwork;
+			$scope.developer.linkedin = response.developer.linkedin;
+			$scope.developer.website = response.developer.website;
+			$scope.developer.facebook = response.developer.facebook;
+			$scope.developer.mail = response.developer.mail;
+		});
+
 
 		//Bookmarks
-		$scope.bookmarkTitle = "";
-		$scope.bookmarkUrl = "";
-		$scope.bookmarkList = [];
+		$scope.websiteTitle = " Website Title";
 
 		// Get Data from Chrome Local Storage
 		chrome.storage.local.get('uhh_',function(fromChromeStorage){
 			fromChromeStorage = fromChromeStorage.uhh_;
-			$scope.bookmarkList = fromChromeStorage? fromChromeStorage.bookmarkList: [];
 			$scope.activeTab = fromChromeStorage? fromChromeStorage.activeTab: 'home';
 			console.log(fromChromeStorage);
 		});
 
+		// Send Runtime Chrome Messages
 		$scope.sendChromeMessage = function (data) {
 			chrome.tabs.query({
 				currentWindow: true,
@@ -45,11 +54,10 @@ ngApp.controller('myController', function ($scope) {
 
 		// Chrome Local Storage
 		$scope.saveToChromeLocalStorage = function(data){
+			console.log("Saving data to Chrome Local Storage");
 			console.log(data);
 			chrome.storage.local.set({
 				'uhh_': data
-			}, function () {
-				console.log('Settings updated to chrome storage');
 			});
 		};
 
@@ -59,26 +67,48 @@ ngApp.controller('myController', function ($scope) {
 			let data = {
 				activeTab: this.activeTab,
 			}
+			console.log("Saving Settings");
 			console.log(data);
 			this.saveToChromeLocalStorage(data);
 		};
 
-		$scope.sayHey = function(){
+		// Send Notification
+		$scope.sendNotification = function(title="Hello there!",message="How are you doing?",type="basic",iconUrl="/res/images/logo.png"){
 			let  notificationOptions = {
-				type: "basic",
-				iconUrl : "/res/images/logo.png",
-				title : "Hello there!",
-				message: "How are you doing?"
+				type: type,
+				iconUrl : iconUrl,
+				title : title,
+				message: message
 			}
 			chrome.notifications.create('notificationId',notificationOptions);
-			this.addBadge();
 		},
 
-		$scope.addBadge = function(){
+		//Add Badge
+		$scope.addBadge = function(data){
 			chrome.browserAction.setBadgeText({
-				text :"Hello"
+				text :data
 			});
 		}
 
-	});
+		// Collect 
+		$scope.collect = function(data){
+			this.sendChromeMessage({
+				action:'collect'
+			});
+		}
 
+		// ------------------ Chrome Run Time Listner --------------------------
+		chrome.runtime.onMessage.addListener(function (response) {
+			
+			// Website Title 
+			if (response.action == 'toPopup') {		
+				$scope.websiteTitle = response.title
+				$scope.sendNotification(response.title);
+				$scope.addBadge(response.title);
+			}
+
+		});
+		// ------------------ Chrome Run Time Listner --------------------------
+
+
+	});

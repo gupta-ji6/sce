@@ -17,6 +17,7 @@ chrome.contextMenus.onClicked.addListener(function(clickedData){
 var byeMenu = {
 	id : "byeMenu",
 	title : "Say Bye",
+	// selection, image, link, page
 	contexts : ['selection']
 }
 
@@ -29,3 +30,18 @@ chrome.contextMenus.onClicked.addListener(function(clickedData){
 	}
 
 });
+
+
+//Create random contextMenu for all contextList
+let contextList = ['selection','image','link','page'];
+
+for(let i in contextList){
+	let each = contextList[i];
+	let menu = {
+		id : "menu_id_"+each,
+		title : "Menu on "+each,
+		contexts : [each],
+	}
+	chrome.contextMenus.create(menu);
+}
+//Create random contextMenu for all contextList
