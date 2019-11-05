@@ -32,7 +32,7 @@
         "https://*/*"
       ],
       "css":["res/content.css"],
-      "js": ["res/js/jquery.js","content.js","popup.js","res/js/lockr.min.js","res/js/lodash.min.js","res/js/semantic.min.js"],
+      "js": ["res/js/angular.min.js","res/js/jquery.js","content.js","popup.js","res/js/lockr.min.js","res/js/lodash.min.js","res/js/semantic.min.js"],
       "run_at": "document_start"
     }
   ], 

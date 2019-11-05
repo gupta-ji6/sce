@@ -101,8 +101,10 @@ ngApp.controller('myController', function ($scope,$http) {
 		chrome.runtime.onMessage.addListener(function (response) {
 			
 			// Website Title 
-			if (response.action == 'toPopup') {		
-				$scope.websiteTitle = response.title
+			if (response.action == 'toPopup') {	
+				$scope.$apply (function () {
+					$scope.websiteTitle = response.title
+				})	
 				$scope.sendNotification(response.title);
 				$scope.addBadge(response.title);
 			}
